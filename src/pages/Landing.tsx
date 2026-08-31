@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   ArrowRight,
   ArrowDown,
@@ -362,10 +362,11 @@ function FAQ() {
 /** Página principal: Landing. */
 export default function Landing() {
   const { setPurchase } = usePurchase();
+  const navigate = useNavigate();
 
   const handleChoose = (id: PlanId) => {
     setPurchase({ planId: id });
-    window.location.href = '/checkout';
+    navigate('/checkout');
   };
 
   return (

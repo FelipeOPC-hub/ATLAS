@@ -6,17 +6,31 @@ import { usePurchase } from '@/context/PurchaseContext';
 
 /**
  * Página de Checkout (/checkout).
- * Muestra un resumen del plan elegido + formulario (nombre, email).
+ * Muestra un resumen del plan elegido + formulario (nombre, email, empresa, teléfono).
  * El botón "Pagar" es mock — no procesa pago real.
  * Al confirmar guarda los datos en el contexto y redirige a /confirmacion.
  */
 export default function Checkout() {
   const navigate = useNavigate();
-  const { planId, name: savedName, email: savedEmail, setPurchase } = usePurchase();
+  const {
+    planId,
+    name: savedName,
+    email: savedEmail,
+    companyName: savedCompanyName,
+    phone: savedPhone,
+    setPurchase,
+  } = usePurchase();
 
   const [name, setName] = useState(savedName);
-  const [email, setEmail] = useState(savedEmail || '45024988@ies9023.net');
-  const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
+  const [email, setEmail] = useState(savedEmail);
+  const [companyName, setCompanyName] = useState(savedCompanyName);
+  const [phone, setPhone] = useState(savedPhone);
+  const [errors, setErrors] = useState<{
+    name?: string;
+    email?: string;
+    companyName?: string;
+    phone?: string;
+  }>({});
   const [submitting, setSubmitting] = useState(false);
 
   const plan = planId ? getPlanById(planId as PlanId) : undefined;
@@ -49,6 +63,8 @@ export default function Checkout() {
     if (!email.trim()) e.email = 'Ingresá tu email';
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
       e.email = 'El email no es válido';
+    if (!companyName.trim()) e.companyName = 'Ingresá el nombre de la empresa';
+    if (!phone.trim()) e.phone = 'Ingresá un teléfono de contacto';
     setErrors(e);
     return Object.keys(e).length === 0;
   };
@@ -57,7 +73,13 @@ export default function Checkout() {
     ev.preventDefault();
     if (!validate()) return;
     setSubmitting(true);
-    setPurchase({ name: name.trim(), email: email.trim(), planId: plan.id });
+    setPurchase({
+      name: name.trim(),
+      email: email.trim(),
+      planId: plan.id,
+      companyName: companyName.trim(),
+      phone: phone.trim(),
+    });
     // Pequeño delay para feedback visual del botón.
     setTimeout(() => navigate('/confirmacion'), 400);
   };
@@ -167,6 +189,52 @@ export default function Checkout() {
                   />
                   {errors.email && (
                     <p className="mt-1.5 text-sm text-red-600">{errors.email}</p>
+                  )}
+                </div>
+
+                {/* Nombre de la empresa */}
+                <div>
+                  <label htmlFor="companyName" className="block text-sm font-semibold text-slate-700">
+                    Nombre de la empresa
+                  </label>
+                  <input
+                    id="companyName"
+                    type="text"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    placeholder="Ej: Cleaning Service SRL"
+                    autoComplete="organization"
+                    className={`mt-2 w-full rounded-xl border bg-white px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 transition focus:outline-none focus:ring-4 ${
+                      errors.companyName
+                        ? 'border-red-300 focus:ring-red-500/20'
+                        : 'border-slate-200 focus:border-brand-400 focus:ring-brand-500/20'
+                    }`}
+                  />
+                  {errors.companyName && (
+                    <p className="mt-1.5 text-sm text-red-600">{errors.companyName}</p>
+                  )}
+                </div>
+
+                {/* Teléfono */}
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-semibold text-slate-700">
+                    Teléfono de contacto
+                  </label>
+                  <input
+                    id="phone"
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+54 9 11 5555-5555"
+                    autoComplete="tel"
+                    className={`mt-2 w-full rounded-xl border bg-white px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 transition focus:outline-none focus:ring-4 ${
+                      errors.phone
+                        ? 'border-red-300 focus:ring-red-500/20'
+                        : 'border-slate-200 focus:border-brand-400 focus:ring-brand-500/20'
+                    }`}
+                  />
+                  {errors.phone && (
+                    <p className="mt-1.5 text-sm text-red-600">{errors.phone}</p>
                   )}
                 </div>
               </div>

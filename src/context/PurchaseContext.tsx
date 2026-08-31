@@ -16,6 +16,8 @@ interface PurchaseState {
   name: string;
   email: string;
   code: string;
+  companyName: string;
+  phone: string;
 }
 
 interface PurchaseContextValue extends PurchaseState {
@@ -51,6 +53,8 @@ export function PurchaseProvider({ children }: { children: ReactNode }) {
     name: initial.name ?? '',
     email: initial.email ?? '',
     code: initial.code ?? '',
+    companyName: initial.companyName ?? '',
+    phone: initial.phone ?? '',
   });
 
   const setPurchase = (data: Partial<PurchaseState>) => {
@@ -62,7 +66,7 @@ export function PurchaseProvider({ children }: { children: ReactNode }) {
   };
 
   const reset = () => {
-    setState({ planId: null, name: '', email: '', code: '' });
+    setState({ planId: null, name: '', email: '', code: '', companyName: '', phone: '' });
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch {

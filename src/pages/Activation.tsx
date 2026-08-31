@@ -15,7 +15,8 @@ import { usePurchase } from '@/context/PurchaseContext';
  * Página de Activación (/activar).
  *
  * El usuario ingresa el código que recibió por email. Para la demo, el código
- * válido es el que se guardó en localStorage durante la confirmación.
+ * válido es el que se guardó en localStorage durante la confirmación — pero
+ * NO se le muestra en pantalla en ningún momento, solo llega por email.
  * Si coincide, se muestra el botón de descarga de la APK (link placeholder).
  */
 
@@ -26,11 +27,9 @@ export default function Activation() {
   const { code: savedCode, email } = usePurchase();
   const [input, setInput] = useState('');
   const [state, setState] = useState<'idle' | 'success' | 'error'>('idle');
-  const [touched, setTouched] = useState(false);
 
   const handleActivate = (e: React.FormEvent) => {
     e.preventDefault();
-    setTouched(true);
     const clean = input.trim().toUpperCase();
     if (!clean) {
       setState('error');
@@ -102,25 +101,11 @@ export default function Activation() {
             Activar
             <ArrowRight className="h-5 w-5" />
           </button>
-
-          {/* Pista para la demo si hay código guardado */}
-          {savedCode && state !== 'success' && (
-            <p className="mt-3 text-center text-xs text-slate-400">
-              Demo: tu código de esta sesión es{' '}
-              <button
-                type="button"
-                onClick={() => setInput(savedCode)}
-                className="font-mono font-semibold text-brand-600 hover:underline"
-              >
-                {savedCode}
-              </button>
-            </p>
-          )}
         </form>
 
         {/* Sección de descarga — solo visible tras activar */}
         {state === 'success' && (
-          <div className="card mt-6 overflow-hidden animate-fade-in-up">
+          <div className="card mt-6 overflow-hidden animate-fade-up">
             <div className="bg-gradient-to-br from-accent-500 to-accent-700 p-6 text-white">
               <div className="flex items-center gap-3">
                 <div className="grid h-12 w-12 place-items-center rounded-xl bg-white/20 backdrop-blur">
@@ -146,11 +131,7 @@ export default function Activation() {
                 </div>
               </div>
 
-              <a
-                href={APK_URL}
-                download
-                className="btn-accent mt-5 w-full"
-              >
+              <a href={APK_URL} download className="btn-accent mt-5 w-full">
                 <Download className="h-5 w-5" />
                 Descargar APK
               </a>

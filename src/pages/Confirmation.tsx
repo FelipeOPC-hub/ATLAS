@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { CheckCircle2, Mail, Copy, Check, ArrowRight, Loader2 } from 'lucide-react';
+import { CheckCircle2, Mail, ArrowRight, Loader2 } from 'lucide-react';
 import { getPlanById, type PlanId } from '@/data/plans';
 import { usePurchase } from '@/context/PurchaseContext';
 
@@ -11,15 +11,15 @@ import { usePurchase } from '@/context/PurchaseContext';
  *  1. Muestra un loader de ~2 segundos simulando el procesamiento del pago.
  *  2. Genera un código random tipo "ATLAS-XXXX-XXXX".
  *  3. Guarda el código en el contexto (localStorage) para validar en /activar.
+ *     El código NO se muestra en pantalla — solo llega por email.
  *  4. Hace un fetch POST (no-cors) al webhook configurado con { email, plan, code }.
- *  5. Muestra mensaje de éxito con el email y el código.
+ *  5. Muestra mensaje de éxito indicando que el código llegó por email.
  *
  * El webhook se envía con mode: "no-cors" — por lo tanto la response es opaca
  * y no podemos leer su contenido, pero el request llega al servidor.
  */
 
-// ⬇️ Pegá aquí la URL de tu webhook (Make, Zapier, n8n, etc.)
-const WEBHOOK_URL = 'PEGAR_URL_AQUI';
+const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbyAYrkUdgrUTeKSOoXHRBMIkbrsRdr1veosqc8sncNuZI8PWfcSZ5WwYSlZqKkH79uQ/exec';
 
 /** Genera un código de activación con formato ATLAS-XXXX-XXXX (mayúsculas + números). */
 function generateCode(): string {
@@ -31,11 +31,9 @@ function generateCode(): string {
 
 export default function Confirmation() {
   const navigate = useNavigate();
-  const { planId, name, email, code, setPurchase } = usePurchase();
+  const { planId, name, email, code, companyName, phone, setPurchase } = usePurchase();
 
   const [status, setStatus] = useState<'processing' | 'done'>('processing');
-  const [displayCode, setDisplayCode] = useState(code);
-  const [copied, setCopied] = useState(false);
 
   const plan = planId ? getPlanById(planId as PlanId) : undefined;
 
@@ -48,7 +46,6 @@ export default function Confirmation() {
 
     // Si ya tenemos un código guardado (venimos de re-cargar), lo usamos.
     if (code) {
-      setDisplayCode(code);
       setStatus('done');
       return;
     }
@@ -56,7 +53,6 @@ export default function Confirmation() {
     // Simulación de procesamiento de pago (~2s).
     const newCode = generateCode();
     const timer = setTimeout(() => {
-      setDisplayCode(newCode);
       setPurchase({ code: newCode });
       setStatus('done');
 
@@ -67,10 +63,12 @@ export default function Confirmation() {
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            email,
-            plan: planId,
-            code: newCode,
-            name,
+          email,
+          plan: planId,
+          code: newCode,
+          name,
+          companyName,
+          phone,
           }),
         }).catch(() => {
           /* no-op: el webhook es best-effort */
@@ -83,13 +81,6 @@ export default function Confirmation() {
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleCopy = () => {
-    navigator.clipboard?.writeText(displayCode).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
-  };
 
   // ─── Estado: procesando ─────────────────────────────────────────────
   if (status === 'processing') {
@@ -151,25 +142,10 @@ export default function Confirmation() {
               </p>
             </div>
 
-            {/* Código generado */}
-            <div className="mt-6">
-              <p className="text-sm font-semibold text-slate-700">
-                Tu código de activación
-              </p>
-              <div className="mt-2 flex items-center gap-2">
-                <code className="flex-1 select-none rounded-xl border-2 border-dashed border-brand-300 bg-brand-50/50 px-4 py-3.5 text-center font-mono text-xl font-bold tracking-widest text-brand-800">
-                  {displayCode}
-                </code>
-                <button
-                  onClick={handleCopy}
-                  className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 transition-all hover:border-brand-300 hover:text-brand-700"
-                  aria-label="Copiar código"
-                >
-                  {copied ? <Check className="h-5 w-5 text-accent-600" /> : <Copy className="h-5 w-5" />}
-                </button>
-              </div>
-              <p className="mt-2 text-xs text-slate-400">
-                Guardá este código: lo vas a necesitar para activar tu acceso.
+            {/* Aviso simple, sin mostrar el código */}
+            <div className="mt-6 rounded-xl bg-brand-50 p-4 text-center">
+              <p className="text-sm text-slate-600">
+                Revisá tu email — ahí vas a encontrar el código para activar tu cuenta.
               </p>
             </div>
 

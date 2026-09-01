@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import Logo from '@/components/Logo';
@@ -7,7 +7,6 @@ import Logo from '@/components/Logo';
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const location = useLocation();
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     if (typeof window !== 'undefined') {
       if (localStorage.getItem('theme') === 'dark') return 'dark';
@@ -33,11 +32,6 @@ export default function Navbar() {
       localStorage.setItem('theme', 'light');
     }
   }, [theme]);
-
-  // Si estamos en la ruta del panel de control, ocultamos completamente la barra pública
-  if (location.pathname === '/panel') {
-    return null;
-  }
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));

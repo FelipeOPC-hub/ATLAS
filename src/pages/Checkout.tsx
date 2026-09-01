@@ -38,14 +38,14 @@ export default function Checkout() {
   // Si no hay plan elegido, mostramos selector rápido para no romper el flujo.
   if (!plan) {
     return (
-      <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center px-5 py-20 text-center">
-        <div className="grid h-16 w-16 place-items-center rounded-2xl bg-brand-50 text-brand-600">
+      <div className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center px-5 py-20 text-center dark:bg-slate-950">
+        <div className="grid h-16 w-16 place-items-center rounded-2xl bg-brand-50 text-brand-600 dark:bg-brand-900/40 dark:text-brand-300">
           <CreditCard className="h-8 w-8" />
         </div>
-        <h1 className="mt-6 text-2xl font-bold text-slate-900">
+        <h1 className="mt-6 text-2xl font-bold text-slate-900 dark:text-white">
           No elegiste un plan todavía
         </h1>
-        <p className="mt-2 text-slate-500">
+        <p className="mt-2 text-slate-500 dark:text-slate-400">
           Volvé a la landing y elegí el plan que mejor se ajuste a tu operación.
         </p>
         <Link to="/" className="btn-primary mt-6">
@@ -85,21 +85,21 @@ export default function Checkout() {
   };
 
   return (
-    <div className="bg-slate-50 pt-24 pb-20">
+    <div className="bg-slate-50 pt-24 pb-20 dark:bg-slate-900">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
         {/* Breadcrumb */}
         <Link
           to="/"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 transition-colors hover:text-brand-700"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 transition-colors hover:text-brand-700 dark:text-slate-400 dark:hover:text-brand-400"
         >
           <ArrowLeft className="h-4 w-4" />
           Volver a la landing
         </Link>
 
-        <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+        <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl dark:text-white">
           Finalizá tu contratación
         </h1>
-        <p className="mt-2 text-slate-500">
+        <p className="mt-2 text-slate-500 dark:text-slate-400">
           Revisá tu plan y completá tus datos para activar el acceso.
         </p>
 
@@ -107,7 +107,7 @@ export default function Checkout() {
           {/* Resumen del plan */}
           <aside className="lg:order-2">
             <div className="card overflow-hidden lg:sticky lg:top-24">
-              <div className="border-b border-slate-100 bg-gradient-to-br from-brand-600 to-brand-800 p-6 text-white">
+              <div className="border-b border-slate-100 bg-gradient-to-br from-brand-600 to-brand-800 p-6 text-white dark:border-slate-800">
                 <p className="text-sm font-medium text-brand-100">Resumen del pedido</p>
                 <h2 className="mt-1 text-2xl font-bold">Plan {plan.name}</h2>
                 <div className="mt-4 flex items-baseline gap-1">
@@ -119,17 +119,17 @@ export default function Checkout() {
               </div>
 
               <div className="p-6">
-                <p className="text-sm font-semibold text-slate-900">Incluye:</p>
+                <p className="text-sm font-semibold text-slate-900 dark:text-white">Incluye:</p>
                 <ul className="mt-3 space-y-2.5">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-start gap-2.5 text-sm">
                       <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-accent-500" />
-                      <span className="text-slate-600">{f}</span>
+                      <span className="text-slate-600 dark:text-slate-400">{f}</span>
                     </li>
                   ))}
                 </ul>
 
-                <div className="mt-6 flex items-center gap-2 rounded-lg bg-accent-50 px-4 py-3 text-sm font-medium text-accent-700">
+                <div className="mt-6 flex items-center gap-2 rounded-lg bg-accent-50 px-4 py-3 text-sm font-medium text-accent-700 dark:bg-accent-900/30 dark:text-accent-300">
                   <ShieldCheck className="h-4 w-4" />
                   Alta inmediata tras la confirmación
                 </div>
@@ -140,15 +140,15 @@ export default function Checkout() {
           {/* Formulario */}
           <main className="lg:order-1">
             <form onSubmit={handleSubmit} className="card p-6 sm:p-8" noValidate>
-              <h2 className="text-xl font-bold text-slate-900">Tus datos</h2>
-              <p className="mt-1 text-sm text-slate-500">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Tus datos</h2>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                 Te enviaremos el código de acceso a tu email.
               </p>
 
               <div className="mt-6 space-y-5">
                 {/* Nombre */}
                 <div>
-                  <label htmlFor="name" className="block text-sm font-semibold text-slate-700">
+                  <label htmlFor="name" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                     Nombre completo
                   </label>
                   <input
@@ -158,20 +158,20 @@ export default function Checkout() {
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Ej: María González"
                     autoComplete="name"
-                    className={`mt-2 w-full rounded-xl border bg-white px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 transition focus:outline-none focus:ring-4 ${
+                    className={`mt-2 w-full rounded-xl border bg-white px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 transition focus:outline-none focus:ring-4 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 ${
                       errors.name
-                        ? 'border-red-300 focus:ring-red-500/20'
-                        : 'border-slate-200 focus:border-brand-400 focus:ring-brand-500/20'
+                        ? 'border-red-300 focus:ring-red-500/20 dark:border-red-800'
+                        : 'border-slate-200 focus:border-brand-400 focus:ring-brand-500/20 dark:border-slate-700'
                     }`}
                   />
                   {errors.name && (
-                    <p className="mt-1.5 text-sm text-red-600">{errors.name}</p>
+                    <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">{errors.name}</p>
                   )}
                 </div>
 
                 {/* Email */}
                 <div>
-                  <label htmlFor="email" className="block text-sm font-semibold text-slate-700">
+                  <label htmlFor="email" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                     Email
                   </label>
                   <input
@@ -181,20 +181,20 @@ export default function Checkout() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="maria@tuempresa.com"
                     autoComplete="email"
-                    className={`mt-2 w-full rounded-xl border bg-white px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 transition focus:outline-none focus:ring-4 ${
+                    className={`mt-2 w-full rounded-xl border bg-white px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 transition focus:outline-none focus:ring-4 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 ${
                       errors.email
-                        ? 'border-red-300 focus:ring-red-500/20'
-                        : 'border-slate-200 focus:border-brand-400 focus:ring-brand-500/20'
+                        ? 'border-red-300 focus:ring-red-500/20 dark:border-red-800'
+                        : 'border-slate-200 focus:border-brand-400 focus:ring-brand-500/20 dark:border-slate-700'
                     }`}
                   />
                   {errors.email && (
-                    <p className="mt-1.5 text-sm text-red-600">{errors.email}</p>
+                    <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">{errors.email}</p>
                   )}
                 </div>
 
                 {/* Nombre de la empresa */}
                 <div>
-                  <label htmlFor="companyName" className="block text-sm font-semibold text-slate-700">
+                  <label htmlFor="companyName" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                     Nombre de la empresa
                   </label>
                   <input
@@ -204,20 +204,20 @@ export default function Checkout() {
                     onChange={(e) => setCompanyName(e.target.value)}
                     placeholder="Ej: Cleaning Service SRL"
                     autoComplete="organization"
-                    className={`mt-2 w-full rounded-xl border bg-white px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 transition focus:outline-none focus:ring-4 ${
+                    className={`mt-2 w-full rounded-xl border bg-white px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 transition focus:outline-none focus:ring-4 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 ${
                       errors.companyName
-                        ? 'border-red-300 focus:ring-red-500/20'
-                        : 'border-slate-200 focus:border-brand-400 focus:ring-brand-500/20'
+                        ? 'border-red-300 focus:ring-red-500/20 dark:border-red-800'
+                        : 'border-slate-200 focus:border-brand-400 focus:ring-brand-500/20 dark:border-slate-700'
                     }`}
                   />
                   {errors.companyName && (
-                    <p className="mt-1.5 text-sm text-red-600">{errors.companyName}</p>
+                    <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">{errors.companyName}</p>
                   )}
                 </div>
 
                 {/* Teléfono */}
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-semibold text-slate-700">
+                  <label htmlFor="phone" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
                     Teléfono de contacto
                   </label>
                   <input
@@ -227,33 +227,33 @@ export default function Checkout() {
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+54 9 11 5555-5555"
                     autoComplete="tel"
-                    className={`mt-2 w-full rounded-xl border bg-white px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 transition focus:outline-none focus:ring-4 ${
+                    className={`mt-2 w-full rounded-xl border bg-white px-4 py-3 text-base text-slate-900 placeholder:text-slate-400 transition focus:outline-none focus:ring-4 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500 ${
                       errors.phone
-                        ? 'border-red-300 focus:ring-red-500/20'
-                        : 'border-slate-200 focus:border-brand-400 focus:ring-brand-500/20'
+                        ? 'border-red-300 focus:ring-red-500/20 dark:border-red-800'
+                        : 'border-slate-200 focus:border-brand-400 focus:ring-brand-500/20 dark:border-slate-700'
                     }`}
                   />
                   {errors.phone && (
-                    <p className="mt-1.5 text-sm text-red-600">{errors.phone}</p>
+                    <p className="mt-1.5 text-sm text-red-600 dark:text-red-400">{errors.phone}</p>
                   )}
                 </div>
               </div>
 
               {/* Separador método de pago (mock) */}
-              <div className="mt-8 border-t border-slate-100 pt-6">
-                <p className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-                  <CreditCard className="h-4 w-4 text-brand-600" />
+              <div className="mt-8 border-t border-slate-100 pt-6 dark:border-slate-800">
+                <p className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300">
+                  <CreditCard className="h-4 w-4 text-brand-600 dark:text-brand-400" />
                   Método de pago
                 </p>
-                <div className="mt-3 flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-4">
+                <div className="mt-3 flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50/60 px-4 py-4 dark:border-slate-700 dark:bg-slate-800/60">
                   <div className="grid h-10 w-14 place-items-center rounded-md bg-gradient-to-br from-slate-700 to-slate-900 text-xs font-bold text-white">
                     CARD
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-slate-700">Tarjeta de crédito/débito</p>
-                    <p className="text-xs text-slate-400">Pago seguro · Demo (no se procesa pago real)</p>
+                    <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Tarjeta de crédito/débito</p>
+                    <p className="text-xs text-slate-400 dark:text-slate-500">Pago seguro · Demo (no se procesa pago real)</p>
                   </div>
-                  <Lock className="h-4 w-4 text-slate-400" />
+                  <Lock className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                 </div>
               </div>
 
@@ -275,7 +275,7 @@ export default function Checkout() {
                 )}
               </button>
 
-              <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-slate-400">
+              <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
                 <Lock className="h-3.5 w-3.5" />
                 Pago seguro y encriptado · Cancelás cuando quieras
               </p>
@@ -284,9 +284,9 @@ export default function Checkout() {
         </div>
 
         {/* Si llegamos sin plan, mostramos opción de cambiar */}
-        <div className="mt-10 text-center text-sm text-slate-500">
+        <div className="mt-10 text-center text-sm text-slate-500 dark:text-slate-400">
           ¿Querés otro plan?{' '}
-          <Link to="/" className="font-semibold text-brand-700 hover:underline">
+          <Link to="/" className="font-semibold text-brand-700 hover:underline dark:text-brand-400">
             Ver todos los planes
           </Link>
         </div>

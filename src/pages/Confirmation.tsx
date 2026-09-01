@@ -63,12 +63,12 @@ export default function Confirmation() {
           mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-          email,
-          plan: planId,
-          code: newCode,
-          name,
-          companyName,
-          phone,
+            email,
+            plan: planId,
+            code: newCode,
+            name,
+            companyName,
+            phone,
           }),
         }).catch(() => {
           /* no-op: el webhook es best-effort */
@@ -85,19 +85,19 @@ export default function Confirmation() {
   // ─── Estado: procesando ─────────────────────────────────────────────
   if (status === 'processing') {
     return (
-      <div className="grid min-h-screen place-items-center bg-slate-50 px-5 pt-20">
+      <div className="grid min-h-screen place-items-center bg-slate-50 px-5 pt-20 dark:bg-slate-950">
         <div className="text-center">
           <div className="relative mx-auto h-20 w-20">
-            <span className="absolute inset-0 rounded-full bg-brand-200/60 animate-pulse-ring" />
-            <span className="absolute inset-0 rounded-full bg-brand-200/60 animate-pulse-ring [animation-delay:0.6s]" />
+            <span className="absolute inset-0 rounded-full bg-brand-200/60 animate-pulse-ring dark:bg-brand-800/30" />
+            <span className="absolute inset-0 rounded-full bg-brand-200/60 animate-pulse-ring [animation-delay:0.6s] dark:bg-brand-800/30" />
             <div className="absolute inset-0 grid place-items-center">
-              <Loader2 className="h-10 w-10 animate-spin text-brand-600" />
+              <Loader2 className="h-10 w-10 animate-spin text-brand-600 dark:text-brand-400" />
             </div>
           </div>
-          <h1 className="mt-8 text-2xl font-bold text-slate-900">
+          <h1 className="mt-8 text-2xl font-bold text-slate-900 dark:text-white">
             Procesando tu pago…
           </h1>
-          <p className="mt-2 text-slate-500">
+          <p className="mt-2 text-slate-500 dark:text-slate-400">
             Estamos confirmando tu contratación. Esto toma solo unos segundos.
           </p>
         </div>
@@ -107,7 +107,7 @@ export default function Confirmation() {
 
   // ─── Estado: confirmado ─────────────────────────────────────────────
   return (
-    <div className="bg-slate-50 pt-24 pb-20">
+    <div className="bg-slate-50 pt-24 pb-20 dark:bg-slate-900">
       <div className="mx-auto max-w-xl px-5 sm:px-8">
         <div className="card overflow-hidden text-center">
           {/* Banner superior */}
@@ -133,18 +133,18 @@ export default function Confirmation() {
 
           {/* Cuerpo */}
           <div className="p-6 sm:p-8">
-            <div className="flex items-start gap-3 rounded-xl bg-brand-50 p-4 text-left">
-              <Mail className="mt-0.5 h-5 w-5 shrink-0 text-brand-600" />
-              <p className="text-sm text-slate-600">
+            <div className="flex items-start gap-3 rounded-xl bg-brand-50 p-4 text-left dark:bg-brand-900/30">
+              <Mail className="mt-0.5 h-5 w-5 shrink-0 text-brand-600 dark:text-brand-400" />
+              <p className="text-sm text-slate-600 dark:text-slate-300">
                 Te enviamos un código de acceso a{' '}
-                <span className="font-semibold text-slate-900">{email}</span>.
+                <span className="font-semibold text-slate-900 dark:text-white">{email}</span>.
                 Revisá también tu carpeta de spam por si acaso.
               </p>
             </div>
 
             {/* Aviso simple, sin mostrar el código */}
-            <div className="mt-6 rounded-xl bg-brand-50 p-4 text-center">
-              <p className="text-sm text-slate-600">
+            <div className="mt-6 rounded-xl bg-brand-50 p-4 text-center dark:bg-brand-900/30">
+              <p className="text-sm text-slate-600 dark:text-slate-300">
                 Revisá tu email — ahí vas a encontrar el código para activar tu cuenta.
               </p>
             </div>
@@ -157,7 +157,7 @@ export default function Confirmation() {
 
             <Link
               to="/"
-              className="mt-3 inline-block text-sm font-medium text-slate-500 transition-colors hover:text-brand-700"
+              className="mt-3 inline-block text-sm font-medium text-slate-500 transition-colors hover:text-brand-700 dark:text-slate-400 dark:hover:text-brand-400"
             >
               Volver al inicio
             </Link>

@@ -8,7 +8,7 @@ export default function Logo({ className = '' }: { className?: string }) {
         <ShieldCheck className="h-5 w-5" strokeWidth={2.5} />
         <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-accent-400 ring-2 ring-white" />
       </div>
-      <span className="text-xl font-extrabold tracking-tight text-slate-900">
+      <span className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">
         ATLAS
       </span>
     </div>
